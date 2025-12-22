@@ -24,6 +24,17 @@ interface UIState {
   pointerLocked: boolean;
 }
 
+interface ControlsState {
+  enabled: boolean;
+  sensitivity: number;
+  invertY: boolean;
+  autoRotate: boolean;
+  cameraMode: 'first-person' | 'third-person';
+  mouseMovement: { x: number; y: number };
+  isPointerLocked: boolean;
+  cameraRotation: { yaw: number; pitch: number };
+}
+
 interface SceneState {
   // Player state
   player: PlayerState;
@@ -39,6 +50,11 @@ interface SceneState {
   setFPS: (fps: number) => void;
   setQuality: (quality: 'high' | 'medium' | 'low') => void;
   setAutoQuality: (auto: boolean) => void;
+  setPerformance: (performance: Partial<PerformanceState>) => void;
+
+  // Controls state
+  controls: ControlsState;
+  setControls: (controls: Partial<ControlsState>) => void;
 
   // UI state
   ui: UIState;
@@ -79,10 +95,22 @@ const initialUIState: UIState = {
   pointerLocked: false
 };
 
-export const useSceneStore = create<SceneState>((set, get) => ({
+const initialControlsState: ControlsState = {
+  enabled: true,
+  sensitivity: 1.0,
+  invertY: false,
+  autoRotate: false,
+  cameraMode: 'first-person',
+  mouseMovement: { x: 0, y: 0 },
+  isPointerLocked: false,
+  cameraRotation: { yaw: 0, pitch: 0 }
+};
+
+export const useSceneStore = create<SceneState>((set) => ({
   // Initial state
   player: initialPlayerState,
   performance: initialPerformanceState,
+  controls: initialControlsState,
   ui: initialUIState,
 
   // Player actions
@@ -149,6 +177,17 @@ export const useSceneStore = create<SceneState>((set, get) => ({
       performance: { ...state.performance, autoQuality }
     })),
 
+  setPerformance: (performanceUpdate) =>
+    set((state) => ({
+      performance: { ...state.performance, ...performanceUpdate }
+    })),
+
+  // Controls actions
+  setControls: (controlsUpdate) =>
+    set((state) => ({
+      controls: { ...state.controls, ...controlsUpdate }
+    })),
+
   // UI actions
   setShowHUD: (showHUD) =>
     set((state) => ({
@@ -182,7 +221,7 @@ export const useSceneStore = create<SceneState>((set, get) => ({
 
   // Utility actions
   resetPlayer: () =>
-    set((state) => ({
+    set(() => ({
       player: initialPlayerState
     })),
 

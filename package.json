@@ -15,6 +15,7 @@
     "@react-three/postprocessing": "^3.0.4",
     "@react-three/rapier": "^2.2.0",
     "@types/three": "^0.181.0",
+    "critters": "^0.0.23",
     "framer-motion": "^12.23.25",
     "leva": "^0.10.1",
     "next": "16.0.8",

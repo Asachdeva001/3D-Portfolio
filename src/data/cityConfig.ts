@@ -1,4 +1,9 @@
 export interface CityConfig {
+  city: {
+    size: number;
+    width: number;
+    depth: number;
+  };
   buildings: {
     count: number;
     minHeight: number;
@@ -35,6 +40,11 @@ export interface CityConfig {
 }
 
 export const cityConfig: CityConfig = {
+  city: {
+    size: 200,
+    width: 200,
+    depth: 200
+  },
   buildings: {
     count: 60,
     minHeight: 15,
